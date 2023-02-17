@@ -1,0 +1,23 @@
+{
+  "name": "bustorbutter",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Timmytbone93/bustOrButter.git"
+  },
+  "author": "Tim Hunt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Timmytbone93/bustOrButter/issues"
+  },
+  "homepage": "https://github.com/Timmytbone93/bustOrButter#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "vite": "^4.1.2"
+  }
+}
