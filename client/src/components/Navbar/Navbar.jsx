@@ -1,60 +1,88 @@
-import React, {useState} from 'react'
-import { Menu } from 'semantic-ui-react'
+import React, { useState, useEffect, useRef } from "react";
+import { Menu, Input, Grid, Segment } from "semantic-ui-react";
+import "./Navbar.css";
 
-
-
+import { GoogleLogin } from "@react-oauth/google";
 
 function Navbar() {
+  const [activeItem, setActiveItem] = useState();
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
 
-    const [activeItem,setActiveItem] = useState()
+  const mounted = useRef();
+  useEffect(() => {
+    if (!mounted.current) {
+      // do componentDidMount logic
+      mounted.current = true;
+      console.log(`Search value updated to ${searchValue}, component mounted!`);
+    } else {
+      // do componentDidUpdate logic
+      console.log(`Search value updated to ${JSON.stringify(searchValue)}`);
+    }
+  }, [searchValue]);
 
-    return (
-      <div className="Navbar">
-          <Menu>
+  const responseMessage = (response) => {
+    console.log(response);
+  };
+  const errorMessage = (error) => {
+    console.log(error);
+  };
+
+  return (
+    <div className="Navbar">
+      <Segment inverted>
+        <Menu inverted pointing secondary>
           <Menu.Item
-            name='editorials'
-            active={activeItem === 'editorials'}
-            onClick={(e,{name})=>{
-                
-                console.log(name)
-                setActiveItem(name)}
-
-            }
+            name="home"
+            active={activeItem === "home"}
+            onClick={(e, { name }) => {
+              console.log(name);
+              setActiveItem(name);
+            }}
           >
-            Editorials
+            Home
           </Menu.Item>
-  
-          <Menu.Item
-            name='reviews'
-            active={activeItem === 'reviews'}
-            onClick={(e,{name})=>{
-                
-                console.log(name)
-                setActiveItem(name)}
 
-            }
+          <Menu.Item
+            name="location"
+            active={activeItem === "location"}
+            onClick={(e, { name }) => {
+              console.log(name);
+              setActiveItem(name);
+            }}
           >
-            Reviews
+            Spots by Location
           </Menu.Item>
-  
-          <Menu.Item
-            name='upcomingEvents'
-            active={activeItem === 'upcomingEvents'}
-            onClick={(e,{name})=>{
-                
-                console.log(name)
-                setActiveItem(name)}
 
-            }
+          <Menu.Item
+            name="best"
+            active={activeItem === "best"}
+            onClick={(e, { name }) => {
+              console.log(name);
+              setActiveItem(name);
+            }}
           >
-            Upcoming Events
+            Best Spots near You
+          </Menu.Item>
+
+          <Menu.Item>
+            <Input
+              className="search"
+              //loading={loading}
+              placeholder="Search Spot"
+              icon={{ name: "search", link: false }}
+              onChange={(e, data) => setSearchValue(data.value)}
+              results={searchResults}
+              value={searchValue}
+            />
+          </Menu.Item>
+          <Menu.Item>
+            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
           </Menu.Item>
         </Menu>
-    
-    
-      </div>
-    )
-  }
+      </Segment>
+    </div>
+  );
+}
 
-  export default Navbar
-
+export default Navbar;
