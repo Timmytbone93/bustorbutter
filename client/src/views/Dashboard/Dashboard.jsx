@@ -13,7 +13,7 @@ function Dashboard() {
     <div className="Dashboard">
       <Container fluid>
         <Navbar />
-        {currentUser.authenticated && }
+        {currentUser.authenticated && <div>weee</div>}
       </Container>
     </div>
   );
