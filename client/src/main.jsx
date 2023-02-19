@@ -5,7 +5,7 @@ import "semantic-ui-css/semantic.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <GoogleOAuthProvider clientId="621248458349-as3cg1ubrilur834mpobrgsnuc31sd6n.apps.googleusercontent.com">
+  <GoogleOAuthProvider clientId="246432958645-j103lgi2lc3r0avshrqqv0k958p4vjts.apps.googleusercontent.com">
     <React.StrictMode>
       <App />
     </React.StrictMode>

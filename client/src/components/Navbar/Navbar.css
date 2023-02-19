@@ -1,3 +1,27 @@
 .Navbar .item:nth-child(4) {
   width: 60% !important;
 }
+
+.google {
+  width: 100px;
+  height: 100px;
+  color: lightgrey;
+}
+.google:hover {
+  color: white;
+  cursor: pointer;
+}
+.green-color {
+  color: lightgreen !important;
+}
+
+.material-icons:hover {
+  cursor: pointer;
+}
+.add_spot i:hover {
+  cursor: pointer;
+  color: red;
+  -webkit-transition: color 500ms linear;
+  -ms-transition: color 500ms linear;
+  transition: color 500ms linear;
+}

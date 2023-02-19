@@ -1,13 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Menu, Input, Grid, Segment } from "semantic-ui-react";
+import React, { useState, useEffect, useRef, useContext } from "react";
+import { Menu, Input, Grid, Segment, Icon, Popup } from "semantic-ui-react";
 import "./Navbar.css";
+import axios from "axios";
 
-import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
+
+import UserContext from "../../context/UserContext/UserContext";
 
 function Navbar() {
   const [activeItem, setActiveItem] = useState();
   const [searchResults, setSearchResults] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [currentUser, setCurrentUser] = useContext(UserContext);
 
   const mounted = useRef();
   useEffect(() => {
@@ -21,11 +25,51 @@ function Navbar() {
     }
   }, [searchValue]);
 
-  const responseMessage = (response) => {
-    console.log(response);
-  };
-  const errorMessage = (error) => {
-    console.log(error);
+  const login = useGoogleLogin({
+    onSuccess: async (response) => {
+      try {
+        console.log(response);
+
+        const { access_token, expires_in, token_type } = response;
+
+        //need to hit google api to get user info
+        const userInfo = await axios.post(
+          "http://127.0.0.1:3001/api/auth/profile",
+          {
+            access_token,
+          }
+        );
+
+        console.log(userInfo);
+
+        //save data to local storage
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            token: userInfo.data.token,
+            profile: userInfo.data.profile,
+            authenticated: true,
+            expires_in,
+          })
+        );
+
+        //save
+        setCurrentUser({
+          token: userInfo.data.token,
+          profile: userInfo.data.profile,
+          authenticated: true,
+          expires_in,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    onError: (error) => console.log(error),
+  });
+
+  const logout = () => {
+    localStorage.setItem("user", "");
+    setCurrentUser({ authenticated: false, profile: {}, access_token: "" });
   };
 
   return (
@@ -76,8 +120,40 @@ function Navbar() {
               value={searchValue}
             />
           </Menu.Item>
+
+          {currentUser.authenticated && (
+            <Menu.Item className="add_spot">
+              <Icon
+                name="plus"
+                size="big"
+                onClick={() => console.log("clicked")}
+              />
+            </Menu.Item>
+          )}
+
           <Menu.Item>
-            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+            {currentUser.authenticated && (
+              <span className="material-icons green-color">skateboarding </span>
+            )}
+            {!currentUser.authenticated && (
+              <Icon name="google" size="big" onClick={() => login()} />
+            )}
+          </Menu.Item>
+          <Menu.Item>
+            {currentUser.authenticated && <div>{currentUser.profile.name}</div>}
+            {!currentUser.authenticated && <div>Please log in</div>}
+          </Menu.Item>
+          <Menu.Item
+            textAlign="right"
+            name="logout"
+            floated="right"
+            onClick={() => logout()}
+          >
+            <Popup
+              content="peace ☮️"
+              trigger={<Icon name="hand peace" size="big" />}
+              position="right center"
+            />
           </Menu.Item>
         </Menu>
       </Segment>
