@@ -64,7 +64,7 @@ web_modules/
 .rts2_cache_umd/
 
 # Optional REPL history
-.node_repl_history
+.node_repl_historylocal
 
 # Output of 'npm pack'
 *.tgz
