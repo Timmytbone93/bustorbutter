@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { Menu, Input, Grid, Segment, Icon, Popup } from "semantic-ui-react";
 import "./Navbar.css";
 import axios from "axios";
+import dayjs from "dayjs";
 
 import { useGoogleLogin } from "@react-oauth/google";
 
 import UserContext from "../../context/UserContext/UserContext";
 
-function Navbar() {
+function Navbar(props) {
   const [activeItem, setActiveItem] = useState();
   const [searchResults, setSearchResults] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -18,10 +19,10 @@ function Navbar() {
     if (!mounted.current) {
       // do componentDidMount logic
       mounted.current = true;
-      console.log(`Search value updated to ${searchValue}, component mounted!`);
+      //console.log(`Search value updated to ${searchValue}, component mounted!`);
     } else {
       // do componentDidUpdate logic
-      console.log(`Search value updated to ${JSON.stringify(searchValue)}`);
+      //console.log(`Search value updated to ${JSON.stringify(searchValue)}`);
     }
   }, [searchValue]);
 
@@ -40,8 +41,6 @@ function Navbar() {
           }
         );
 
-        console.log(userInfo);
-
         //save data to local storage
         localStorage.setItem(
           "user",
@@ -49,7 +48,7 @@ function Navbar() {
             token: userInfo.data.token,
             profile: userInfo.data.profile,
             authenticated: true,
-            expires_in,
+            expires_at: dayjs().add(60, "minute"),
           })
         );
 
@@ -58,7 +57,7 @@ function Navbar() {
           token: userInfo.data.token,
           profile: userInfo.data.profile,
           authenticated: true,
-          expires_in,
+          expires_at: dayjs().add(60, "minute"),
         });
       } catch (e) {
         console.log(e);
@@ -69,7 +68,12 @@ function Navbar() {
 
   const logout = () => {
     localStorage.setItem("user", "");
-    setCurrentUser({ authenticated: false, profile: {}, access_token: "" });
+    setCurrentUser({
+      authenticated: false,
+      profile: {},
+      access_token: "",
+      allowsLocation: false,
+    });
   };
 
   return (
@@ -126,7 +130,7 @@ function Navbar() {
               <Icon
                 name="plus"
                 size="big"
-                onClick={() => console.log("clicked")}
+                onClick={() => props.setShowForm(!props.showForm)}
               />
             </Menu.Item>
           )}
@@ -140,11 +144,13 @@ function Navbar() {
             )}
           </Menu.Item>
           <Menu.Item>
-            {currentUser.authenticated && <div>{currentUser.profile.name}</div>}
-            {!currentUser.authenticated && <div>Please log in</div>}
+            {currentUser.authenticated && (
+              <div>{currentUser?.profile?.name}</div>
+            )}
+            {!currentUser?.authenticated && <div>Please log in</div>}
           </Menu.Item>
           <Menu.Item
-            textAlign="right"
+            textalign="right"
             name="logout"
             floated="right"
             onClick={() => logout()}

@@ -8,7 +8,8 @@ export const UserProvider = ({ children }) => {
     token: "",
     profile: {},
     authenticated: false,
-    expires_in: 0,
+    expires_at: "",
+    allowsLocation: false,
   });
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export const UserProvider = ({ children }) => {
       if (cuser === null) {
         console.log("not authenticated");
         localStorage.setItem("user", "");
-        cuser = "";
+        cuser = {};
       }
 
       setCurrentUser(cuser);
@@ -25,11 +26,6 @@ export const UserProvider = ({ children }) => {
 
     checkLoggedIn();
   }, []);
-
-  useEffect(() => {
-    console.log("current user updated to ");
-    console.log(currentUser);
-  }, [currentUser]);
 
   return (
     <UserContext.Provider value={[currentUser, setCurrentUser]}>

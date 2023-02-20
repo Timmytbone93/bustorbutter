@@ -12,7 +12,7 @@ var createToken = function (auth) {
     picture: auth.picture,
   };
   return jwt.sign(userToken, config.Google.client_id, {
-    expiresIn: 60, //1 minute
+    expiresIn: 60 * 2, //five minutes
   });
 };
 

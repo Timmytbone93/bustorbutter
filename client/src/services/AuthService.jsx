@@ -1,4 +1,5 @@
 import axios from "axios";
+import dayjs from "dayjs";
 
 export const login = async (token) => {
   console.log(token);
@@ -11,9 +12,15 @@ export const login = async (token) => {
 };
 
 export const isAuthenticated = () => {
-  const user = localStorage.getItem("user");
-  if (!user) {
-    return {};
+  let user = localStorage.getItem("user");
+
+  if (!user) return {};
+
+  user = JSON.parse(user);
+
+  if (dayjs(user.expires_at).format() < dayjs().format()) {
+    console.log("AUTH EXPIRED");
+    return null;
   }
-  return JSON.parse(user);
+  return user;
 };

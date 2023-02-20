@@ -19,6 +19,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use("/api/auth", require("./routes/apis/auth"));
 
+app.use("/api/google", require("./routes/apis/google"));
+
 // add middlewares
 
 app.use(express.json());

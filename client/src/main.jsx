@@ -3,11 +3,12 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "semantic-ui-css/semantic.min.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import config from "../config/config.json";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <GoogleOAuthProvider clientId="246432958645-j103lgi2lc3r0avshrqqv0k958p4vjts.apps.googleusercontent.com">
-    <React.StrictMode>
+  <React.StrictMode>
+    <GoogleOAuthProvider clientId={config.Google.client_id}>
       <App />
-    </React.StrictMode>
-  </GoogleOAuthProvider>
+    </GoogleOAuthProvider>
+  </React.StrictMode>
 );
