@@ -4,12 +4,14 @@ import ReactDOM from "react-dom/client";
 import { Routes, Route } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import UserContext from "../../context/UserContext/UserContext";
+import BannerContext from "../../context/BannerContext/BannerContext";
 import Formy from "../../components/Form/Formy";
-
-import { Container, Divider } from "semantic-ui-react";
+import Banner from "../../components/Banner/Banner";
+import { Container, Divider, Button } from "semantic-ui-react";
 
 function Dashboard() {
   const [currentUser, setCurrentUser] = useContext(UserContext);
+  const [banner, setBanner] = useContext(BannerContext);
   const [showForm, setShowForm] = useState(false);
   return (
     <div className="Dashboard">
@@ -17,10 +19,25 @@ function Dashboard() {
         {currentUser.authenticated && showForm && (
           <Formy params={{ labels: [], data: {} }} setShowForm={setShowForm} />
         )}
+
+        {banner.show && <Banner />}
+
         <Navbar setShowForm={setShowForm} showForm={showForm} />
         <br />
         <Container>
           <Divider>
+            <Button
+              onClick={() => {
+                setBanner({
+                  ...banner,
+                  show: true,
+                  type: "failure",
+                  msg: "Failure Banner Example",
+                });
+              }}
+            >
+              test Banner
+            </Button>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
               vulputate faucibus metus, id faucibus leo pretium et. Praesent

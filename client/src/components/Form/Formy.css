@@ -25,3 +25,9 @@
   cursor: pointer;
   color: grey;
 }
+.Formy .file_info {
+  color: green;
+}
+.Formy .remove_pin {
+  position: absolute;
+}

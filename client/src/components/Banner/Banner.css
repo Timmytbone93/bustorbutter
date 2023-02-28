@@ -1,0 +1,42 @@
+.Banner {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+.Banner.opened {
+  height: 9%;
+  display: block;
+}
+
+.Banner.closed {
+  height: 0%;
+  display: none;
+}
+.Banner.success {
+  background-color: lightgreen;
+}
+
+.Banner.failure {
+  background-color: lightcoral;
+}
+
+.Banner > p {
+  color: white;
+  size: 2em;
+
+  text-align: center;
+
+  margin-top: 2em !important;
+  font-weight: bold;
+}
+.Banner > .close {
+  color: white;
+  margin-right: 1%;
+  float: right;
+}
+.Banner > .close:hover {
+  cursor: pointer;
+  color: lightgrey;
+}
